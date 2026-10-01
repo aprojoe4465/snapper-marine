@@ -86,8 +86,8 @@ img {
 }
 
 .brand img {
-  height: 48px;
-  width: auto;
+  width: 248px;
+  height: auto;
 }
 
 .nav {
@@ -503,6 +503,12 @@ textarea {
   border-radius: 8px;
   padding: 0.45rem 0.7rem;
   cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .brand img {
+    width: 190px;
+  }
 }
 
 @media (max-width: 900px) {

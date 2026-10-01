@@ -15,12 +15,11 @@ export default function Header() {
       <div className="container header-inner">
         <Link href="/" className="brand" onClick={() => setOpen(false)}>
           <Image
-            src="/logo.png"
+            src="/logo-header.png"
             alt="Snapper Marine logo"
-            width={160}
-            height={64}
+            width={248}
+            height={56}
             priority
-            style={{ height: 48, width: "auto" }}
           />
           <span className="sr-only">{site.shortName}</span>
         </Link>
