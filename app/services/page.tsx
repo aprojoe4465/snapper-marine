@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/site";
+import { boatServices } from "@/lib/boats";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -36,27 +38,42 @@ export default function ServicesPage() {
           <h1>Marine repair services</h1>
           <p>
             Shop-quality workmanship for powerboats and recreational vessels —
-            plus mobile service when you need us on-site.
+            including center-console fishing boats — plus mobile service when you
+            need us on-site.
           </p>
         </div>
       </div>
 
       <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <h2>Repair shop</h2>
-            <p>
-              Bring your boat in for diagnostics and repairs. Service list below
-              is a starting point — ask if you need something not listed.
-            </p>
-          </div>
-          <div className="card-grid">
-            {shopServices.map((s) => (
-              <article key={s.title} className="card">
-                <h3>{s.title}</h3>
-                <p>{s.body}</p>
-              </article>
-            ))}
+        <div className="container services-spotlight">
+          <figure className="services-photo">
+            <Image
+              src={boatServices.src}
+              alt={boatServices.alt}
+              width={boatServices.width}
+              height={boatServices.height}
+              className="services-photo-img"
+            />
+            <figcaption className="photo-credit">
+              {boatServices.caption} {boatServices.credit}
+            </figcaption>
+          </figure>
+          <div>
+            <div className="section-head">
+              <h2>Repair shop</h2>
+              <p>
+                Bring your boat in for diagnostics and repairs. Service list below
+                is a starting point — ask if you need something not listed.
+              </p>
+            </div>
+            <div className="card-grid">
+              {shopServices.map((s) => (
+                <article key={s.title} className="card">
+                  <h3>{s.title}</h3>
+                  <p>{s.body}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>

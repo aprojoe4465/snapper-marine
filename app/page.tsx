@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/site";
+import { boatGallery, boatHero } from "@/lib/boats";
 
 export default function HomePage() {
   return (
     <>
-      <section className="hero">
+      <section className="hero hero-with-photo">
         <div className="container hero-grid">
           <div>
             <span className="eyebrow">Florida marine repair</span>
@@ -16,7 +17,8 @@ export default function HomePage() {
             <p className="lead">
               {site.name} keeps you on the water — shop-quality repairs and
               on-site mobile service across Coral Springs, Port St. Lucie, and
-              South Florida.
+              South Florida. We work on center-console fishing boats and other
+              powerboats.
             </p>
             <div className="cta-row">
               <Link href="/book" className="btn btn-primary">
@@ -30,20 +32,65 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div>
+          <div className="hero-visual">
+            <figure className="hero-photo">
+              <Image
+                src={boatHero.src}
+                alt={boatHero.alt}
+                width={boatHero.width}
+                height={boatHero.height}
+                priority
+                className="hero-photo-img"
+              />
+              <figcaption className="photo-credit">
+                {boatHero.caption} {boatHero.credit}
+              </figcaption>
+            </figure>
             <Image
-              className="hero-logo"
+              className="hero-logo hero-logo-badge"
               src="/logo.png"
               alt="Snapper Marine, LLC logo"
-              width={640}
-              height={360}
-              priority
+              width={200}
+              height={112}
             />
           </div>
         </div>
       </section>
 
-      <section className="section section-alt">
+      <section className="section section-alt" id="boats">
+        <div className="container">
+          <div className="section-head">
+            <h2>Center-console fishing boats</h2>
+            <p>
+              Illustrative photos of center-console sport fishing boats — the
+              style many of our South Florida customers run. These are free-license
+              style references, not official Contender (or other brand) product
+              photos, and Snapper Marine does not sell boats.
+            </p>
+          </div>
+          <div className="boat-gallery">
+            {boatGallery.map((img) => (
+              <figure key={img.src} className="boat-card">
+                <div className="boat-card-frame">
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    width={img.width}
+                    height={img.height}
+                    className="boat-card-img"
+                  />
+                </div>
+                <figcaption>
+                  <span className="boat-card-caption">{img.caption}</span>
+                  <span className="photo-credit">{img.credit}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
         <div className="container">
           <div className="section-head">
             <h2>What we do</h2>
@@ -81,7 +128,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section section-alt">
         <div className="container">
           <div className="section-head">
             <h2>Ready to get back on the water?</h2>
