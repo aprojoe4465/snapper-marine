@@ -48,34 +48,16 @@ Phone CTA: **(772) 626-8149** (`+17726268149`).
 
 Vercel’s serverless filesystem is **ephemeral** — JSON writes to `data/` work in local `next dev` / `next start`, but **will not persist** on Vercel production. For go-live, wire email (below) or a free store (e.g. Supabase table / Upstash Redis).
 
-### Wire email (Resend — recommended free tier)
+### Booking email (Resend)
 
-1. Create a [Resend](https://resend.com) account and API key.
-2. Verify a sending domain (or use Resend’s onboarding address for tests).
-3. Add env vars on Vercel:
+Booking submissions are emailed to `mbarnes@snappermarine.com` when `RESEND_API_KEY` is set. Add these variables in Vercel **Production**:
 
 ```env
 RESEND_API_KEY=re_xxx
-BOOKING_NOTIFY_TO=you@yourinbox.com
-BOOKING_FROM=bookings@snappermarine.com
+RESEND_FROM=Snapper Marine <onboarding@resend.dev>
 ```
 
-4. In `app/api/book/route.ts`, after `appendBooking`, send mail (install `resend` and uncomment/adapt):
-
-```ts
-// npm i resend
-import { Resend } from "resend";
-
-if (process.env.RESEND_API_KEY) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
-  await resend.emails.send({
-    from: process.env.BOOKING_FROM!,
-    to: process.env.BOOKING_NOTIFY_TO!,
-    subject: `Service request — ${entry.name}`,
-    text: JSON.stringify(entry, null, 2),
-  });
-}
-```
+`RESEND_FROM` is optional and defaults to the Resend onboarding sender for testing. After verifying `snappermarine.com` in Resend, set it to a sender on that domain, such as `Snapper Marine <bookings@snappermarine.com>`. If the API key is missing or Resend has an error, the booking is still saved and the customer still receives a success response; the server logs the skipped or failed notification.
 
 ### Alternative: Formspree
 

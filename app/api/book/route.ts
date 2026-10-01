@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
-import { appendBooking, type BookingPhoto } from "@/lib/bookings";
+import { Resend } from "resend";
+import { appendBooking, type BookingPhoto, type BookingRequest } from "@/lib/bookings";
+import { site } from "@/lib/site";
 
 export const runtime = "nodejs";
 
@@ -79,6 +81,102 @@ async function parsePhotos(form: FormData): Promise<BookingPhoto[]> {
   return photos;
 }
 
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>'"]/g, (character) => {
+    const entities: Record<string, string> = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "'": "&#39;",
+      '"': "&quot;",
+    };
+    return entities[character];
+  });
+}
+
+function safeFilename(name: string, index: number): string {
+  const cleaned = name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(-100);
+  return cleaned || `service-photo-${index + 1}`;
+}
+
+function photoAttachments(photos: BookingPhoto[]) {
+  return photos.flatMap((photo, index) => {
+    const match = photo.dataUrl.match(/^data:([^;]+);base64,(.+)$/);
+    if (!match) {
+      console.warn(`[booking] Skipping invalid photo data for ${photo.name}`);
+      return [];
+    }
+    return [{
+      filename: safeFilename(photo.name, index),
+      content: Buffer.from(match[2], "base64"),
+      contentType: match[1],
+    }];
+  });
+}
+
+function bookingEmailText(entry: BookingRequest): string {
+  return [
+    "New Snapper Marine service request",
+    `Booking ID: ${entry.id}`,
+    `Received: ${entry.createdAt}`,
+    "",
+    `Name: ${entry.name}`,
+    `Phone: ${entry.phone}`,
+    `Email: ${entry.email}`,
+    `Service: ${entry.serviceType}`,
+    `Boat / trailer: ${entry.boatType}`,
+    `Location: ${entry.locationType} — ${entry.locationDetail}`,
+    `Preferred date: ${entry.preferredDate || "Not specified"}`,
+    `Preferred time: ${entry.preferredTime || "Not specified"}`,
+    `Photos attached: ${entry.photos.length}`,
+    "",
+    "Problem / service needed:",
+    entry.problem,
+  ].join("\n");
+}
+
+function bookingEmailHtml(entry: BookingRequest): string {
+  const row = (label: string, value: string) =>
+    `<tr><th align="left" style="padding:6px 12px 6px 0;vertical-align:top">${escapeHtml(label)}</th><td style="padding:6px 0">${escapeHtml(value)}</td></tr>`;
+  return `<!doctype html>
+<html><body style="font-family:Arial,sans-serif;color:#1b1b22">
+  <h2>New Snapper Marine service request</h2>
+  <p><strong>Booking ID:</strong> ${escapeHtml(entry.id)}</p>
+  <table>${row("Name", entry.name)}${row("Phone", entry.phone)}${row("Email", entry.email)}${row("Service", entry.serviceType)}${row("Boat / trailer", entry.boatType)}${row("Location", `${entry.locationType} — ${entry.locationDetail}`)}${row("Preferred date", entry.preferredDate || "Not specified")}${row("Preferred time", entry.preferredTime || "Not specified")}${row("Photos", `${entry.photos.length} attached`)}</table>
+  <h3>Problem / service needed</h3>
+  <p>${escapeHtml(entry.problem).replace(/\n/g, "<br />")}</p>
+</body></html>`;
+}
+
+async function notifyByEmail(entry: BookingRequest): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.info(`[booking] RESEND_API_KEY is not set; email skipped for ${entry.id}`);
+    return;
+  }
+
+  try {
+    const resend = new Resend(apiKey);
+    const from = process.env.RESEND_FROM || "Snapper Marine <onboarding@resend.dev>";
+    const result = await resend.emails.send({
+      from,
+      to: [site.email],
+      subject: `New Snapper Marine service request — ${entry.name}`,
+      text: bookingEmailText(entry),
+      html: bookingEmailHtml(entry),
+      attachments: photoAttachments(entry.photos),
+    });
+
+    if (result.error) {
+      console.error(`[booking] Resend failed for ${entry.id}:`, result.error);
+      return;
+    }
+    console.info(`[booking] Email sent for ${entry.id}: ${result.data?.id || "accepted"}`);
+  } catch (error) {
+    console.error(`[booking] Email notification failed for ${entry.id}:`, error);
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const form = await req.formData();
@@ -121,8 +219,7 @@ export async function POST(req: Request) {
       photos,
     });
 
-    // Email stub: wire Resend or Formspree — see README.
-    // if (process.env.RESEND_API_KEY) { ... }
+    await notifyByEmail(entry);
 
     return NextResponse.json({ ok: true, id: entry.id });
   } catch (err) {
