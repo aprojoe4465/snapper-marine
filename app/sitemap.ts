@@ -9,6 +9,7 @@ const paths = [
   "/about",
   "/contact",
   "/privacy",
+  "/terms",
   "/book",
 ];
 
