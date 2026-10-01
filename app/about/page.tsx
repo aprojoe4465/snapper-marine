@@ -4,7 +4,8 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "About Snapper Marine, LLC — marine repair and mobile marine service in Florida.",
+  description:
+    "About Snapper Marine, LLC — mobile marine service at your dock, marina, or home in Florida.",
 };
 
 export default function AboutPage() {
@@ -15,8 +16,8 @@ export default function AboutPage() {
           <span className="eyebrow">Our company</span>
           <h1>About {site.name}</h1>
           <p>
-            Professional marine repair and mobile marine service built around
-            reliability, clear communication, and getting you back on the water.
+            Mobile marine service built around reliability, clear communication,
+            and getting you back on the water — we come to your boat.
           </p>
         </div>
       </div>
@@ -25,20 +26,20 @@ export default function AboutPage() {
         <div className="container prose" style={{ maxWidth: 720 }}>
           <h2>Who we are</h2>
           <p>
-            {site.name} provides marine repair shop services and convenient
-            mobile marine work for boaters in Coral Springs, Port St. Lucie, and
-            South Florida.
+            {site.name} is a mobile marine business serving boaters in Coral
+            Springs, Port St. Lucie, and South Florida. We come to your dock,
+            marina, or home.
           </p>
           <p>
             Whether you need diagnostics, maintenance, or repairs, we focus on
-            honest assessments and quality workmanship — in the shop or at your
-            dock, marina, or home.
+            honest assessments and quality workmanship where your boat already
+            sits.
           </p>
 
           <h2>What matters to us</h2>
           <ul>
             <li>Clear estimates and communication before work begins</li>
-            <li>Shop-quality standards on mobile jobs whenever possible</li>
+            <li>Professional standards on every on-site job</li>
             <li>Respect for your time and your vessel</li>
           </ul>
 

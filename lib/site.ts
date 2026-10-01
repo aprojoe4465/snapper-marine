@@ -1,7 +1,7 @@
 export const site = {
   name: "Snapper Marine, LLC",
   shortName: "Snapper Marine",
-  tagline: "Marine Repair & Mobile Marine Service",
+  tagline: "Mobile Marine Service — We Come to You",
   domain: "snappermarine.com",
   phone: "9549344474",
   phoneDisplay: "(954) 934-4474",

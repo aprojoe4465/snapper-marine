@@ -1,6 +1,6 @@
 # Snapper Marine, LLC — Marketing & Booking Site
 
-Professional marketing site with **service booking requests** for Snapper Marine, LLC (marine repair + mobile marine).
+Professional marketing site with **service booking requests** for Snapper Marine, LLC (**mobile marine only** — on-site at dock, marina, or home).
 
 - **Stack:** Next.js 14 (App Router) + TypeScript  
 - **Domain (planned):** [snappermarine.com](https://snappermarine.com) (IONOS)  
@@ -25,7 +25,7 @@ npm run build && npm start
 | Route | Purpose |
 |-------|---------|
 | `/` | Home — hero, logo, Book / Call CTAs |
-| `/services` | Repair shop + link to mobile |
+| `/services` | On-site mobile marine services |
 | `/mobile-marine` | On-site / dock / marina / home service |
 | `/service-area` | Coral Springs, Port St. Lucie, South Florida (radius TBD) |
 | `/about` | Company overview |

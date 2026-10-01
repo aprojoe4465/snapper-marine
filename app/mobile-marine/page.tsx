@@ -30,8 +30,8 @@ export default function MobileMarinePage() {
               <div className="icon">📍</div>
               <h3>At your dock or marina</h3>
               <p>
-                Ideal for troubleshooting that doesn&apos;t require a full shop
-                haul-out. Tell us the slip or marina when you book.
+                Troubleshooting and repairs at the slip — tell us the marina or
+                dock details when you book.
               </p>
             </article>
             <article className="card">
@@ -46,8 +46,8 @@ export default function MobileMarinePage() {
               <div className="icon">🛠</div>
               <h3>What we handle on-site</h3>
               <p>
-                Diagnostics, many repairs, and maintenance. Complex jobs may
-                still need shop time — we&apos;ll advise after the request.
+                Diagnostics, repairs, and maintenance. We&apos;ll confirm what we
+                can complete at your location after reviewing your request.
               </p>
             </article>
           </div>
@@ -56,7 +56,7 @@ export default function MobileMarinePage() {
           <ol>
             <li>Submit a <Link href="/book">service request</Link> with boat and location details.</li>
             <li>We confirm availability, travel, and a time window.</li>
-            <li>Our tech arrives on-site and gets to work — or schedules shop follow-up if needed.</li>
+            <li>Our tech arrives on-site and gets to work.</li>
           </ol>
 
           <p>

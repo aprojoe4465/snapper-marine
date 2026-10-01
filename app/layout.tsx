@@ -6,11 +6,11 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: {
-    default: `${site.name} | Marine Repair & Mobile Marine`,
+    default: `${site.name} | Mobile Marine Service`,
     template: `%s | ${site.shortName}`,
   },
   description:
-    "Snapper Marine, LLC — professional marine repair shop and mobile marine service in Coral Springs, Port St. Lucie, and South Florida. Book service online.",
+    "Snapper Marine, LLC — mobile marine service at your dock, marina, or home in Coral Springs, Port St. Lucie, and South Florida. Book on-site service online.",
   metadataBase: new URL(`https://${site.domain}`),
   openGraph: {
     title: site.name,

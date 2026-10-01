@@ -2,7 +2,7 @@
   "name": "snapper-marine",
   "version": "0.1.0",
   "private": true,
-  "description": "Snapper Marine, LLC — marine repair & mobile marine booking site",
+  "description": "Snapper Marine, LLC — mobile marine booking site (on-site dock/marina/home)",
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",

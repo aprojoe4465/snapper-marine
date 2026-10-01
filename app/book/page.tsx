@@ -5,7 +5,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Book Service",
   description:
-    "Request marine repair or mobile marine service from Snapper Marine, LLC.",
+    "Request on-site mobile marine service from Snapper Marine, LLC — dock, marina, or home.",
 };
 
 export default function BookPage() {

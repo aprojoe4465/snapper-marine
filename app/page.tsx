@@ -9,16 +9,15 @@ export default function HomePage() {
       <section className="hero hero-with-photo">
         <div className="container hero-grid">
           <div>
-            <span className="eyebrow">Florida marine repair</span>
+            <span className="eyebrow">Florida mobile marine</span>
             <h1>
-              Expert boat repair &amp;{" "}
-              <span>mobile marine</span> service
+              On-site <span>mobile marine</span> service
             </h1>
             <p className="lead">
-              {site.name} keeps you on the water — shop-quality repairs and
-              on-site mobile service across Coral Springs, Port St. Lucie, and
-              South Florida. We work on center-console fishing boats and other
-              powerboats.
+              {site.name} comes to you — dock, marina, or home — across Coral
+              Springs, Port St. Lucie, and South Florida. Diagnostics, maintenance,
+              and repairs for center-console fishing boats and other powerboats,
+              without hauling your boat away.
             </p>
             <div className="cta-row">
               <Link href="/book" className="btn btn-primary">
@@ -95,25 +94,25 @@ export default function HomePage() {
           <div className="section-head">
             <h2>What we do</h2>
             <p>
-              From routine maintenance to diagnostics and repairs — in the shop
-              or at your dock, marina, or home.
+              From routine maintenance to diagnostics and repairs — at your dock,
+              marina, or home.
             </p>
           </div>
           <div className="card-grid">
             <article className="card">
-              <div className="icon">⚙</div>
-              <h3>Repair shop</h3>
+              <div className="icon">🚤</div>
+              <h3>We come to you</h3>
               <p>
-                Engine work, electrical, systems diagnostics, and full-service
-                marine repair you can trust.
+                Mobile marine service at your dock, marina slip, or home trailer —
+                no need to haul in.
               </p>
             </article>
             <article className="card">
-              <div className="icon">🚤</div>
-              <h3>Mobile marine</h3>
+              <div className="icon">⚙</div>
+              <h3>On-site repairs</h3>
               <p>
-                We come to you — dockside, marina, or trailer — for convenient
-                on-site service across South Florida.
+                Engine work, electrical, systems diagnostics, and maintenance
+                handled where your boat sits.
               </p>
             </article>
             <article className="card">
@@ -121,7 +120,7 @@ export default function HomePage() {
               <h3>Easy booking</h3>
               <p>
                 Request service online in minutes. Tell us about your boat and
-                we&apos;ll follow up to confirm.
+                location — we&apos;ll follow up to confirm.
               </p>
             </article>
           </div>
@@ -134,7 +133,7 @@ export default function HomePage() {
             <h2>Ready to get back on the water?</h2>
             <p>
               Call us or submit a service request — we&apos;ll confirm timing and
-              next steps.
+              next steps for an on-site visit.
             </p>
           </div>
           <div className="cta-row">

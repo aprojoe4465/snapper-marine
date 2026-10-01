@@ -7,25 +7,25 @@ import { boatServices } from "@/lib/boats";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Marine repair shop and mobile marine services from Snapper Marine, LLC — engines, electrical, diagnostics, and more.",
+    "Mobile marine services from Snapper Marine, LLC — on-site engines, electrical, diagnostics, and more at your dock, marina, or home.",
 };
 
-const shopServices = [
+const mobileServices = [
   {
     title: "Engine diagnostics & repair",
-    body: "Outboard and inboard troubleshooting, tune-ups, and mechanical repairs.",
+    body: "Outboard and inboard troubleshooting, tune-ups, and mechanical repairs on-site.",
   },
   {
     title: "Electrical systems",
-    body: "Battery banks, charging systems, wiring, and electronics support.",
+    body: "Battery banks, charging systems, wiring, and electronics support where your boat is.",
   },
   {
     title: "Routine maintenance",
-    body: "Seasonal service, fluid changes, impeller work, and preventive care.",
+    body: "Seasonal service, fluid changes, impeller work, and preventive care at your location.",
   },
   {
     title: "Systems & accessories",
-    body: "Pumps, bilge, steering, and general marine systems repair.",
+    body: "Pumps, bilge, steering, and general marine systems repair — dockside or at home.",
   },
 ];
 
@@ -35,11 +35,11 @@ export default function ServicesPage() {
       <div className="page-hero">
         <div className="container">
           <span className="eyebrow">What we offer</span>
-          <h1>Marine repair services</h1>
+          <h1>Mobile marine services</h1>
           <p>
-            Shop-quality workmanship for powerboats and recreational vessels —
-            including center-console fishing boats — plus mobile service when you
-            need us on-site.
+            Professional workmanship for powerboats and recreational vessels —
+            including center-console fishing boats — delivered on-site at your
+            dock, marina, or home.
           </p>
         </div>
       </div>
@@ -60,14 +60,15 @@ export default function ServicesPage() {
           </figure>
           <div>
             <div className="section-head">
-              <h2>Repair shop</h2>
+              <h2>On-site service</h2>
               <p>
-                Bring your boat in for diagnostics and repairs. Service list below
-                is a starting point — ask if you need something not listed.
+                We come to you for diagnostics, maintenance, and repairs. Service
+                list below is a starting point — ask if you need something not
+                listed.
               </p>
             </div>
             <div className="card-grid">
-              {shopServices.map((s) => (
+              {mobileServices.map((s) => (
                 <article key={s.title} className="card">
                   <h3>{s.title}</h3>
                   <p>{s.body}</p>
@@ -81,16 +82,16 @@ export default function ServicesPage() {
       <section className="section section-alt">
         <div className="container">
           <div className="section-head">
-            <h2>Mobile marine</h2>
+            <h2>How mobile service works</h2>
             <p>
-              Prefer we come to you? See our{" "}
+              Prefer more detail on locations and process? See our{" "}
               <Link href="/mobile-marine">mobile marine</Link> page for on-site
-              service details and coverage.
+              coverage and how a visit works.
             </p>
           </div>
           <div className="cta-row">
             <Link href="/book" className="btn btn-primary">
-              Book service
+              Book on-site service
             </Link>
             <a href={site.phoneHref} className="btn btn-ghost">
               Call {site.phoneDisplay}
