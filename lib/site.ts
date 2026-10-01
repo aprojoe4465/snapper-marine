@@ -3,10 +3,10 @@ export const site = {
   shortName: "Snapper Marine",
   tagline: "Mobile Marine Service — We Come to You",
   domain: "snappermarine.com",
-  phone: "9549344474",
-  phoneDisplay: "(954) 934-4474",
-  phoneHref: "tel:+19549344474",
-  email: "info@snappermarine.com", // placeholder — update when ready
+  phone: "7726268149",
+  phoneDisplay: "(772) 626-8149",
+  phoneHref: "tel:+17726268149",
+  email: "mbarnes@snappermarine.com",
   serviceAreaSummary: "Broward, Palm Beach, Martin, and St. Lucie counties (Florida)",
   serviceAreas: [
     { name: "Broward County", note: "Florida service area" },

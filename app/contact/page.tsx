@@ -36,7 +36,7 @@ export default function ContactPage() {
                 <a href={`mailto:${site.email}`}>{site.email}</a>
               </p>
               <p style={{ marginTop: "0.5rem" }}>
-                Placeholder mailbox — update when your domain email is live.
+                Email us anytime and we’ll get back to you promptly.
               </p>
             </article>
             <article className="card">

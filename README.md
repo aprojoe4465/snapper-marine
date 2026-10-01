@@ -29,11 +29,12 @@ npm run build && npm start
 | `/mobile-marine` | On-site / dock / marina / home service |
 | `/service-area` | Broward, Palm Beach, Martin, and St. Lucie counties (Florida) |
 | `/about` | Company overview |
-| `/contact` | Phone, email placeholder, book CTA |
+| `/contact` | Phone, email, book CTA |
+| `/privacy` | Privacy policy |
 | `/book` | Service request form |
 | `/book/success` | Confirmation after submit |
 
-Phone CTA: **(954) 934-4474** (`+19549344474`). Update in `lib/site.ts` if the business number differs.
+Phone CTA: **(772) 626-8149** (`+17726268149`).
 
 ## How booking works (MVP)
 

@@ -8,6 +8,7 @@ const paths = [
   "/service-area",
   "/about",
   "/contact",
+  "/privacy",
   "/book",
 ];
 

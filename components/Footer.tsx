@@ -27,6 +27,7 @@ export default function Footer() {
               <Link href="/service-area">Service Area</Link>
               <Link href="/book">Book Service</Link>
               <Link href="/contact">Contact</Link>
+              <Link href="/privacy">Privacy Policy</Link>
             </div>
           </div>
           <div>
