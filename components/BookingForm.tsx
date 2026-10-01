@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 type FormState = {
@@ -16,6 +16,22 @@ type FormState = {
   problem: string;
 };
 
+type SelectedPhoto = {
+  file: File;
+  preview: string;
+};
+
+const MAX_PHOTOS = 6;
+const MAX_PHOTO_SIZE = 5 * 1024 * 1024;
+const PHOTO_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/heic",
+  "image/heif",
+]);
+const PHOTO_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif"]);
+
 const initial: FormState = {
   name: "",
   phone: "",
@@ -29,14 +45,69 @@ const initial: FormState = {
   problem: "",
 };
 
+function isAllowedPhoto(file: File) {
+  const extension = file.name.slice(file.name.lastIndexOf(".")).toLowerCase();
+  return PHOTO_TYPES.has(file.type.toLowerCase()) || (!file.type && PHOTO_EXTENSIONS.has(extension));
+}
+
 export default function BookingForm() {
   const router = useRouter();
   const [form, setForm] = useState<FormState>(initial);
+  const [photos, setPhotos] = useState<SelectedPhoto[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const photosRef = useRef<SelectedPhoto[]>([]);
+
+  useEffect(() => {
+    photosRef.current = photos;
+  }, [photos]);
+
+  useEffect(() => {
+    return () => {
+      photosRef.current.forEach(({ preview }) => URL.revokeObjectURL(preview));
+    };
+  }, []);
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  function onPhotoChange(e: ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files || []);
+    e.target.value = "";
+    setPhotoError(null);
+
+    if (!files.length) return;
+    if (photos.length + files.length > MAX_PHOTOS) {
+      setPhotoError(`Please select no more than ${MAX_PHOTOS} photos.`);
+      return;
+    }
+
+    const invalidType = files.find((file) => !isAllowedPhoto(file));
+    if (invalidType) {
+      setPhotoError("Photos must be JPG, PNG, WEBP, or HEIC files.");
+      return;
+    }
+
+    const oversized = files.find((file) => file.size > MAX_PHOTO_SIZE);
+    if (oversized) {
+      setPhotoError(`${oversized.name} is larger than 5 MB.`);
+      return;
+    }
+
+    setPhotos((current) => [
+      ...current,
+      ...files.map((file) => ({ file, preview: URL.createObjectURL(file) })),
+    ]);
+  }
+
+  function removePhoto(index: number) {
+    setPhotos((current) => {
+      const removed = current[index];
+      if (removed) URL.revokeObjectURL(removed.preview);
+      return current.filter((_, photoIndex) => photoIndex !== index);
+    });
   }
 
   async function onSubmit(e: FormEvent) {
@@ -44,10 +115,13 @@ export default function BookingForm() {
     setError(null);
     setSubmitting(true);
     try {
+      const payload = new FormData();
+      Object.entries(form).forEach(([key, value]) => payload.append(key, value));
+      photos.forEach(({ file }) => payload.append("photos", file, file.name));
+
       const res = await fetch("/api/book", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: payload,
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -83,7 +157,7 @@ export default function BookingForm() {
             autoComplete="tel"
             value={form.phone}
             onChange={(e) => update("phone", e.target.value)}
-            placeholder="(954) 555-1234"
+            placeholder="(772) 555-1234"
           />
         </label>
       </div>
@@ -184,10 +258,42 @@ export default function BookingForm() {
           onChange={(e) => update("problem", e.target.value)}
           placeholder="Describe the issue, symptoms, or work you need…"
         />
-        <span className="form-hint">
-          Photo upload coming later — for now, describe the issue or text/email photos after booking.
-        </span>
       </label>
+
+      <div className="photo-upload">
+        <label htmlFor="service-photos">Photos (optional)</label>
+        <input
+          id="service-photos"
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+          multiple
+          onChange={onPhotoChange}
+          disabled={photos.length >= MAX_PHOTOS || submitting}
+        />
+        <span className="form-hint">
+          Add up to {MAX_PHOTOS} photos, 5 MB each. JPG, PNG, WEBP, or HEIC.
+        </span>
+        {photoError && <span className="form-error" role="alert">{photoError}</span>}
+        {photos.length > 0 && (
+          <div className="photo-previews" aria-label="Selected photos">
+            {photos.map((photo, index) => (
+              <div className="photo-preview" key={`${photo.file.name}-${photo.file.lastModified}-${index}`}>
+                <img src={photo.preview} alt={`Selected boat photo ${index + 1}`} />
+                <button
+                  type="button"
+                  className="photo-remove"
+                  onClick={() => removePhoto(index)}
+                  aria-label={`Remove ${photo.file.name}`}
+                  disabled={submitting}
+                >
+                  Remove
+                </button>
+                <span title={photo.file.name}>{photo.file.name}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {error && <p className="form-error" role="alert">{error}</p>}
 

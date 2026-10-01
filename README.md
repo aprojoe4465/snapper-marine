@@ -38,11 +38,11 @@ Phone CTA: **(772) 626-8149** (`+17726268149`).
 
 ## How booking works (MVP)
 
-1. User submits `/book` (name, phone, email, service type, boat/trailer type/make, location type + details, preferred date/time, problem description).
+1. User submits `/book` (name, phone, email, service type, boat/trailer type/make, location type + details, preferred date/time, problem description, and optional photos).
 2. `POST /api/book` validates and **appends** the request to `data/bookings.json`.
 3. User is redirected to `/book/success?id=…`.
 
-**Photo upload:** stubbed for later (hint on the form).
+**Photo upload:** the form accepts up to 6 JPG, PNG, WEBP, or HEIC images (5 MB each). For this MVP, image data is embedded as data URLs in `data/bookings.json`; move uploads to R2/S3 or email attachments before relying on them in production because Vercel filesystem storage is ephemeral.
 
 ### Important for Vercel
 

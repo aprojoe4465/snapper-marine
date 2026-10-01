@@ -1,6 +1,13 @@
 import { promises as fs } from "fs";
 import path from "path";
 
+export type BookingPhoto = {
+  name: string;
+  type: string;
+  size: number;
+  dataUrl: string;
+};
+
 export type BookingRequest = {
   id: string;
   createdAt: string;
@@ -14,6 +21,7 @@ export type BookingRequest = {
   preferredDate: string;
   preferredTime: string;
   problem: string;
+  photos: BookingPhoto[];
 };
 
 const dataPath = path.join(process.cwd(), "data", "bookings.json");

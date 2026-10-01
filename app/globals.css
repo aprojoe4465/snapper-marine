@@ -403,6 +403,66 @@ textarea {
   font-weight: 400;
 }
 
+.photo-upload {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.photo-upload > label {
+  display: block;
+}
+
+.photo-upload input[type="file"] {
+  padding: 0.6rem;
+  cursor: pointer;
+}
+
+.photo-previews {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.photo-preview {
+  min-width: 0;
+  display: grid;
+  gap: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.photo-preview img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.photo-preview span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.photo-remove {
+  width: fit-content;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--blue-bright);
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.photo-remove:hover {
+  color: var(--chrome-bright);
+  text-decoration: underline;
+}
+
 .success-box {
   text-align: center;
   padding: 3rem 1.5rem;
