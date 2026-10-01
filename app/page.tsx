@@ -15,8 +15,8 @@ export default function HomePage() {
             </h1>
             <p className="lead">
               {site.name} comes to you — dock, marina, or home — across {site.serviceAreaSummary}. Diagnostics, maintenance,
-              and repairs for center-console fishing boats and other powerboats,
-              without hauling your boat away.
+              and repairs for center-console fishing boats, other powerboats, and
+              boat trailers, without hauling your boat away.
             </p>
             <div className="cta-row">
               <Link href="/book" className="btn btn-primary">
@@ -112,6 +112,14 @@ export default function HomePage() {
               <p>
                 Engine work, electrical, systems diagnostics, and maintenance
                 handled where your boat sits.
+              </p>
+            </article>
+            <article className="card">
+              <div className="icon">🔧</div>
+              <h3>Trailer repair</h3>
+              <p>
+                Mobile help for trailer lights, bearings, bunks, rollers,
+                winches, wiring, and other practical repairs.
               </p>
             </article>
             <article className="card">

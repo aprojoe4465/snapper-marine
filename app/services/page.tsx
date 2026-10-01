@@ -7,8 +7,17 @@ import { boatServices } from "@/lib/boats";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Mobile marine services from Snapper Marine, LLC — on-site engines, electrical, diagnostics, and more at your dock, marina, or home.",
+    "Mobile marine and boat trailer services from Snapper Marine, LLC — on-site repairs at your dock, marina, or home.",
 };
+
+const trailerServices = [
+  "Trailer lights and wiring",
+  "Wheel bearings",
+  "Bunks and rollers",
+  "Winches and straps",
+  "Tongues and couplers",
+  "Basic frame repairs",
+];
 
 const mobileServices = [
   {
@@ -37,9 +46,9 @@ export default function ServicesPage() {
           <span className="eyebrow">What we offer</span>
           <h1>Mobile marine services</h1>
           <p>
-            Professional workmanship for powerboats and recreational vessels —
-            including center-console fishing boats — delivered on-site at your
-            dock, marina, or home.
+            Professional workmanship for powerboats, recreational vessels, and
+            boat trailers — delivered on-site at your dock, marina, or home
+            throughout {site.serviceAreaSummary}.
           </p>
         </div>
       </div>
@@ -75,6 +84,32 @@ export default function ServicesPage() {
                 </article>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-alt">
+        <div className="container">
+          <div className="section-head">
+            <span className="eyebrow">Boat trailer service</span>
+            <h2>Trailer repair at your location</h2>
+            <p>
+              We come to your home, marina, or storage location for practical
+              trailer repairs that can be completed safely on-site. Trailer
+              service is subject to access, condition, parts, and the scope of
+              the repair.
+            </p>
+          </div>
+          <div className="card-grid">
+            {trailerServices.map((service) => (
+              <article key={service} className="card">
+                <h3>{service}</h3>
+                <p>
+                  Mobile inspection and repair for common boat-trailer issues —
+                  tell us what you&apos;re seeing when you request service.
+                </p>
+              </article>
+            ))}
           </div>
         </div>
       </section>

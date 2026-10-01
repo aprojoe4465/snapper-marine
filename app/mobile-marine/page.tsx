@@ -17,8 +17,8 @@ export default function MobileMarinePage() {
           <h1>Mobile marine service</h1>
           <p>
             Dockside, marina, or trailer — Snapper Marine brings diagnostics and
-            repairs to your location so you spend less time hauling and more time
-            on the water.
+            repairs to your location, including practical boat-trailer repairs,
+            so you spend less time hauling and more time on the water.
           </p>
         </div>
       </div>
@@ -46,8 +46,10 @@ export default function MobileMarinePage() {
               <div className="icon">🛠</div>
               <h3>What we handle on-site</h3>
               <p>
-                Diagnostics, repairs, and maintenance. We&apos;ll confirm what we
-                can complete at your location after reviewing your request.
+                Boat diagnostics, maintenance, and repairs, plus trailer lights,
+                bearings, bunks, rollers, winches, wiring, tongues, couplers, and
+                basic frame work. We&apos;ll confirm what we can complete at your
+                location after reviewing your request.
               </p>
             </article>
           </div>

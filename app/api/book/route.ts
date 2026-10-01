@@ -7,6 +7,7 @@ type Body = {
   name?: string;
   phone?: string;
   email?: string;
+  serviceType?: string;
   boatType?: string;
   locationType?: string;
   locationDetail?: string;
@@ -16,6 +17,7 @@ type Body = {
 };
 
 const LOCATION_TYPES = new Set(["dock", "home", "marina", "other"]);
+const SERVICE_TYPES = new Set(["marine", "trailer", "both", "unsure"]);
 
 function required(value: unknown, label: string): string {
   if (typeof value !== "string" || !value.trim()) {
@@ -31,6 +33,7 @@ export async function POST(req: Request) {
     const name = required(body.name, "Name");
     const phone = required(body.phone, "Phone");
     const email = required(body.email, "Email");
+    const serviceType = required(body.serviceType, "Service type");
     const boatType = required(body.boatType, "Boat type");
     const locationDetail = required(body.locationDetail, "Location details");
     const problem = required(body.problem, "Problem description");
@@ -43,6 +46,13 @@ export async function POST(req: Request) {
       );
     }
 
+    if (!SERVICE_TYPES.has(serviceType)) {
+      return NextResponse.json(
+        { error: "Invalid service type" },
+        { status: 400 }
+      );
+    }
+
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: "Invalid email" }, { status: 400 });
     }
@@ -51,6 +61,7 @@ export async function POST(req: Request) {
       name,
       phone,
       email,
+      serviceType: serviceType as "marine" | "trailer" | "both" | "unsure",
       boatType,
       locationType: locationTypeRaw as "dock" | "home" | "marina" | "other",
       locationDetail,

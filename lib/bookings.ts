@@ -7,6 +7,7 @@ export type BookingRequest = {
   name: string;
   phone: string;
   email: string;
+  serviceType: "marine" | "trailer" | "both" | "unsure";
   boatType: string;
   locationType: "dock" | "home" | "marina" | "other";
   locationDetail: string;

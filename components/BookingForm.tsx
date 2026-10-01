@@ -7,6 +7,7 @@ type FormState = {
   name: string;
   phone: string;
   email: string;
+  serviceType: string;
   boatType: string;
   locationType: string;
   locationDetail: string;
@@ -19,6 +20,7 @@ const initial: FormState = {
   name: "",
   phone: "",
   email: "",
+  serviceType: "marine",
   boatType: "",
   locationType: "marina",
   locationDetail: "",
@@ -100,13 +102,28 @@ export default function BookingForm() {
       </label>
 
       <label>
-        Boat type / make *
+        Service type *
+        <select
+          required
+          name="serviceType"
+          value={form.serviceType}
+          onChange={(e) => update("serviceType", e.target.value)}
+        >
+          <option value="marine">Boat / marine service</option>
+          <option value="trailer">Boat trailer repair</option>
+          <option value="both">Boat and trailer service</option>
+          <option value="unsure">Not sure — help me choose</option>
+        </select>
+      </label>
+
+      <label>
+        Boat / trailer type / make *
         <input
           required
           name="boatType"
           value={form.boatType}
           onChange={(e) => update("boatType", e.target.value)}
-          placeholder="e.g. 24' center console, Yamaha F150"
+          placeholder="e.g. 24' center console, Yamaha F150, tandem trailer"
         />
       </label>
 

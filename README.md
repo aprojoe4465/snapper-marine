@@ -1,6 +1,6 @@
 # Snapper Marine, LLC — Marketing & Booking Site
 
-Professional marketing site with **service booking requests** for Snapper Marine, LLC (**mobile marine only** — on-site at dock, marina, or home).
+Professional marketing site with **service booking requests** for Snapper Marine, LLC (**mobile marine and boat trailer service** — on-site at dock, marina, or home).
 
 - **Stack:** Next.js 14 (App Router) + TypeScript  
 - **Domain (planned):** [snappermarine.com](https://snappermarine.com) (IONOS)  
@@ -37,7 +37,7 @@ Phone CTA: **(954) 934-4474** (`+19549344474`). Update in `lib/site.ts` if the b
 
 ## How booking works (MVP)
 
-1. User submits `/book` (name, phone, email, boat type/make, location type + details, preferred date/time, problem description).
+1. User submits `/book` (name, phone, email, service type, boat/trailer type/make, location type + details, preferred date/time, problem description).
 2. `POST /api/book` validates and **appends** the request to `data/bookings.json`.
 3. User is redirected to `/book/success?id=…`.
 
