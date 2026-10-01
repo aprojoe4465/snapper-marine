@@ -191,12 +191,6 @@ img {
   }
 }
 
-.hero-logo {
-  max-width: 420px;
-  margin: 0 auto;
-  filter: drop-shadow(0 0 40px var(--blue-glow));
-}
-
 .eyebrow {
   display: inline-block;
   color: var(--blue-bright);
@@ -621,17 +615,6 @@ textarea {
   aspect-ratio: 4 / 3;
 }
 
-.hero-logo-badge {
-  position: absolute;
-  right: 0.75rem;
-  bottom: 2.75rem;
-  width: 96px;
-  height: auto;
-  max-width: 28%;
-  filter: drop-shadow(0 0 16px var(--blue-glow));
-  opacity: 0.95;
-}
-
 .photo-credit {
   display: block;
   padding: 0.55rem 0.85rem;
@@ -720,11 +703,4 @@ textarea {
   display: block;
   object-fit: cover;
   aspect-ratio: 4 / 3;
-}
-
-@media (max-width: 640px) {
-  .hero-logo-badge {
-    width: 72px;
-    bottom: 3.25rem;
-  }
 }

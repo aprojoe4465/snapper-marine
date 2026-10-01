@@ -44,13 +44,6 @@ export default function HomePage() {
                 {boatHero.caption} {boatHero.credit}
               </figcaption>
             </figure>
-            <Image
-              className="hero-logo hero-logo-badge"
-              src="/logo.png"
-              alt="Snapper Marine, LLC logo"
-              width={200}
-              height={112}
-            />
           </div>
         </div>
       </section>
