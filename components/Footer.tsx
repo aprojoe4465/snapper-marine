@@ -12,10 +12,10 @@ export default function Footer() {
             <h4>{site.name}</h4>
             <p>{site.tagline}</p>
             <p style={{ marginTop: "0.75rem" }}>
-              Serving Coral Springs, Port St. Lucie &amp; South Florida
+              Serving {site.serviceAreaSummary}
               <br />
               <span className="note" style={{ marginTop: "0.5rem" }}>
-                Exact service radius TBD
+                Travel availability depends on location and scheduling
               </span>
             </p>
           </div>

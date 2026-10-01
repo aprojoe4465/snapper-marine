@@ -4,7 +4,7 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Contact Snapper Marine, LLC — call, email, or book a service request online.",
+  description: `Contact ${site.name} — call, email, or book a service request online in ${site.serviceAreaSummary}.`,
 };
 
 export default function ContactPage() {
@@ -50,8 +50,7 @@ export default function ContactPage() {
           </div>
 
           <p style={{ marginTop: "2rem", color: "var(--text-muted)" }}>
-            Service areas: Coral Springs · Port St. Lucie · South Florida{" "}
-            <span className="note">radius TBD</span>
+            Service areas: {site.serviceAreaSummary}
           </p>
         </div>
       </section>

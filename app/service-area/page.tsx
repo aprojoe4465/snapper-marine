@@ -5,7 +5,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Service Area",
   description:
-    "Snapper Marine serves Coral Springs, Port St. Lucie, and South Florida. Exact radius TBD.",
+    `${site.name} serves ${site.serviceAreaSummary}.`,
 };
 
 export default function ServiceAreaPage() {
@@ -16,8 +16,8 @@ export default function ServiceAreaPage() {
           <span className="eyebrow">Florida coverage</span>
           <h1>Service area</h1>
           <p>
-            We serve boaters in and around our primary Florida markets, with
-            mobile marine travel subject to distance and scheduling.
+            We serve boaters throughout {site.serviceAreaSummary}, with mobile
+            marine travel subject to availability and scheduling.
           </p>
         </div>
       </div>
@@ -39,8 +39,8 @@ export default function ServiceAreaPage() {
           </div>
 
           <p className="note" style={{ marginTop: "1.5rem", display: "block" }}>
-            Exact service radius and travel fees TBD — if you&apos;re outside these
-            areas, still reach out; we may be able to help.
+            Travel availability and fees depend on location and scheduling. If you
+            are outside these counties, still reach out; we may be able to help.
           </p>
 
           <div className="cta-row" style={{ marginTop: "2rem" }}>

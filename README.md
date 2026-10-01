@@ -27,7 +27,7 @@ npm run build && npm start
 | `/` | Home — hero, logo, Book / Call CTAs |
 | `/services` | On-site mobile marine services |
 | `/mobile-marine` | On-site / dock / marina / home service |
-| `/service-area` | Coral Springs, Port St. Lucie, South Florida (radius TBD) |
+| `/service-area` | Broward, Palm Beach, Martin, and St. Lucie counties (Florida) |
 | `/about` | Company overview |
 | `/contact` | Phone, email placeholder, book CTA |
 | `/book` | Service request form |

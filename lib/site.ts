@@ -7,10 +7,12 @@ export const site = {
   phoneDisplay: "(954) 934-4474",
   phoneHref: "tel:+19549344474",
   email: "info@snappermarine.com", // placeholder — update when ready
+  serviceAreaSummary: "Broward, Palm Beach, Martin, and St. Lucie counties (Florida)",
   serviceAreas: [
-    { name: "Coral Springs", note: "Primary area" },
-    { name: "Port St. Lucie", note: "Primary area" },
-    { name: "South Florida", note: "Broader coverage — exact radius TBD" },
+    { name: "Broward County", note: "Florida service area" },
+    { name: "Palm Beach County", note: "Florida service area" },
+    { name: "Martin County", note: "Florida service area" },
+    { name: "St. Lucie County", note: "Florida service area" },
   ],
 } as const;
 

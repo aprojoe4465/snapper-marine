@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: `%s | ${site.shortName}`,
   },
   description:
-    "Snapper Marine, LLC — mobile marine service at your dock, marina, or home in Coral Springs, Port St. Lucie, and South Florida. Book on-site service online.",
+    `${site.name} — mobile marine service at your dock, marina, or home throughout ${site.serviceAreaSummary}. Book on-site service online.`,
   metadataBase: new URL(`https://${site.domain}`),
   openGraph: {
     title: site.name,

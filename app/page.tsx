@@ -14,8 +14,7 @@ export default function HomePage() {
               On-site <span>mobile marine</span> service
             </h1>
             <p className="lead">
-              {site.name} comes to you — dock, marina, or home — across Coral
-              Springs, Port St. Lucie, and South Florida. Diagnostics, maintenance,
+              {site.name} comes to you — dock, marina, or home — across {site.serviceAreaSummary}. Diagnostics, maintenance,
               and repairs for center-console fishing boats and other powerboats,
               without hauling your boat away.
             </p>
@@ -62,7 +61,7 @@ export default function HomePage() {
             <h2>Center-console fishing boats</h2>
             <p>
               Illustrative photos of center-console sport fishing boats — the
-              style many of our South Florida customers run. These are free-license
+              style many of our customers in these Florida counties run. These are free-license
               style references, not official Contender (or other brand) product
               photos, and Snapper Marine does not sell boats.
             </p>

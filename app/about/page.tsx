@@ -5,7 +5,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "About Snapper Marine, LLC — mobile marine service at your dock, marina, or home in Florida.",
+    `About ${site.name} — mobile marine service at your dock, marina, or home throughout ${site.serviceAreaSummary}.`,
 };
 
 export default function AboutPage() {
@@ -26,8 +26,8 @@ export default function AboutPage() {
         <div className="container prose" style={{ maxWidth: 720 }}>
           <h2>Who we are</h2>
           <p>
-            {site.name} is a mobile marine business serving boaters in Coral
-            Springs, Port St. Lucie, and South Florida. We come to your dock,
+            {site.name} is a mobile marine business serving boaters throughout
+            {" "}{site.serviceAreaSummary}. We come to your dock,
             marina, or home.
           </p>
           <p>

@@ -5,7 +5,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Mobile Marine",
   description:
-    "On-site mobile marine service from Snapper Marine — dock, marina, or home across South Florida.",
+    `On-site mobile marine service from ${site.shortName} — dock, marina, or home throughout ${site.serviceAreaSummary}.`,
 };
 
 export default function MobileMarinePage() {
@@ -60,10 +60,10 @@ export default function MobileMarinePage() {
           </ol>
 
           <p>
-            Coverage focuses on Coral Springs, Port St. Lucie, and broader South
-            Florida. Exact travel radius is still being finalized.
+            Coverage focuses on {site.serviceAreaSummary}. Travel availability
+            depends on location and scheduling.
           </p>
-          <p className="note">Service area radius TBD — contact us to confirm your location.</p>
+          <p className="note">Contact us to confirm availability at your location.</p>
 
           <div className="cta-row" style={{ marginTop: "2rem" }}>
             <Link href="/book" className="btn btn-primary">
