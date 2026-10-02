@@ -39,14 +39,28 @@ export async function readBookings(): Promise<BookingRequest[]> {
 export async function appendBooking(
   booking: Omit<BookingRequest, "id" | "createdAt">
 ): Promise<BookingRequest> {
-  const list = await readBookings();
   const entry: BookingRequest = {
     ...booking,
     id: `bk_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
     createdAt: new Date().toISOString(),
   };
-  list.push(entry);
-  await fs.mkdir(path.dirname(dataPath), { recursive: true });
-  await fs.writeFile(dataPath, JSON.stringify(list, null, 2), "utf8");
+
+  // Vercel's deployed filesystem is read-only and ephemeral; Resend is the
+  // production persistence path. Keep the JSON write for local development only.
+  if (process.env.VERCEL) {
+    console.info(`[booking] Skipping local file write on Vercel for ${entry.id}`);
+    return entry;
+  }
+
+  try {
+    const list = await readBookings();
+    list.push(entry);
+    await fs.mkdir(path.dirname(dataPath), { recursive: true });
+    await fs.writeFile(dataPath, JSON.stringify(list, null, 2), "utf8");
+  } catch (error) {
+    // A local permission or filesystem error must not prevent email notification.
+    console.warn(`[booking] Could not write ${dataPath}; continuing with email`, error);
+  }
+
   return entry;
 }

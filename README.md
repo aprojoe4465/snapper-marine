@@ -46,7 +46,7 @@ Phone CTA: **(772) 626-8149** (`+17726268149`).
 
 ### Important for Vercel
 
-Vercel’s serverless filesystem is **ephemeral** — JSON writes to `data/` work in local `next dev` / `next start`, but **will not persist** on Vercel production. For go-live, wire email (below) or a free store (e.g. Supabase table / Upstash Redis).
+Vercel’s serverless filesystem is **ephemeral and read-only** — local development writes to `data/bookings.json`, while deployed Vercel requests skip that file and use the Resend notification as the primary booking record. For durable structured storage later, add a database such as Supabase or Upstash Redis.
 
 ### Booking email (Resend)
 
