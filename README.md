@@ -42,7 +42,7 @@ Phone CTA: **(772) 626-8149** (`+17726268149`).
 2. `POST /api/book` validates and **appends** the request to `data/bookings.json`.
 3. User is redirected to `/book/success?id=…`.
 
-**Photo upload:** the form accepts up to 6 JPG, PNG, WEBP, or HEIC images (5 MB each). For this MVP, image data is embedded as data URLs in `data/bookings.json`; move uploads to R2/S3 or email attachments before relying on them in production because Vercel filesystem storage is ephemeral.
+**Photo upload:** the form accepts up to 5 JPG, PNG, or WEBP images, resizes them in the browser, and caps the photo payload at 3 MB total (700 KB each) to stay below Vercel Hobby's request limit. Local development embeds image data as data URLs in `data/bookings.json`; on Vercel the file write is skipped and Resend email is the primary record.
 
 ### Important for Vercel
 

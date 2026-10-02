@@ -21,16 +21,12 @@ type SelectedPhoto = {
   preview: string;
 };
 
-const MAX_PHOTOS = 6;
-const MAX_PHOTO_SIZE = 5 * 1024 * 1024;
-const PHOTO_TYPES = new Set([
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/heic",
-  "image/heif",
-]);
-const PHOTO_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif"]);
+const MAX_PHOTOS = 5;
+const MAX_PHOTO_SIZE = 700 * 1024;
+const MAX_TOTAL_PHOTO_SIZE = 3 * 1024 * 1024;
+const MAX_IMAGE_DIMENSION = 1400;
+const PHOTO_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+const PHOTO_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp"]);
 
 const initial: FormState = {
   name: "",
@@ -50,6 +46,59 @@ function isAllowedPhoto(file: File) {
   return PHOTO_TYPES.has(file.type.toLowerCase()) || (!file.type && PHOTO_EXTENSIONS.has(extension));
 }
 
+function loadImage(file: File): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const source = URL.createObjectURL(file);
+    const image = new Image();
+    image.onload = () => {
+      URL.revokeObjectURL(source);
+      resolve(image);
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(source);
+      reject(new Error("This image could not be read. Choose a JPG, PNG, or WEBP photo."));
+    };
+    image.src = source;
+  });
+}
+
+function canvasBlob(canvas: HTMLCanvasElement, quality: number): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => (blob ? resolve(blob) : reject(new Error("Could not optimize this photo."))),
+      "image/jpeg",
+      quality,
+    );
+  });
+}
+
+async function optimizePhoto(file: File): Promise<File> {
+  const image = await loadImage(file);
+  const largestSide = Math.max(image.naturalWidth, image.naturalHeight);
+  const scale = Math.min(1, MAX_IMAGE_DIMENSION / largestSide);
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+  canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+  const context = canvas.getContext("2d");
+  if (!context) throw new Error("Could not optimize this photo.");
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  let blob: Blob | null = null;
+  for (const quality of [0.82, 0.7, 0.58, 0.46]) {
+    blob = await canvasBlob(canvas, quality);
+    if (blob.size <= MAX_PHOTO_SIZE) break;
+  }
+  if (!blob || blob.size > MAX_PHOTO_SIZE) {
+    throw new Error("This photo is too detailed to fit the 700 KB upload limit. Choose a smaller photo.");
+  }
+
+  const baseName = file.name.replace(/\.[^/.]+$/, "") || "service-photo";
+  return new File([blob], `${baseName}.jpg`, {
+    type: "image/jpeg",
+    lastModified: Date.now(),
+  });
+}
+
 export default function BookingForm() {
   const router = useRouter();
   const [form, setForm] = useState<FormState>(initial);
@@ -57,6 +106,7 @@ export default function BookingForm() {
   const [error, setError] = useState<string | null>(null);
   const [photoError, setPhotoError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [optimizing, setOptimizing] = useState(false);
   const photosRef = useRef<SelectedPhoto[]>([]);
 
   useEffect(() => {
@@ -73,7 +123,7 @@ export default function BookingForm() {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
-  function onPhotoChange(e: ChangeEvent<HTMLInputElement>) {
+  async function onPhotoChange(e: ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files || []);
     e.target.value = "";
     setPhotoError(null);
@@ -86,20 +136,29 @@ export default function BookingForm() {
 
     const invalidType = files.find((file) => !isAllowedPhoto(file));
     if (invalidType) {
-      setPhotoError("Photos must be JPG, PNG, WEBP, or HEIC files.");
+      setPhotoError("Photos must be JPG, PNG, or WEBP files.");
       return;
     }
 
-    const oversized = files.find((file) => file.size > MAX_PHOTO_SIZE);
-    if (oversized) {
-      setPhotoError(`${oversized.name} is larger than 5 MB.`);
-      return;
-    }
+    setOptimizing(true);
+    try {
+      const optimized = await Promise.all(files.map(optimizePhoto));
+      const existingBytes = photos.reduce((total, photo) => total + photo.file.size, 0);
+      const newBytes = optimized.reduce((total, file) => total + file.size, 0);
+      if (existingBytes + newBytes > MAX_TOTAL_PHOTO_SIZE) {
+        setPhotoError("Selected photos exceed the 3 MB total upload limit. Remove a photo or choose smaller images.");
+        return;
+      }
 
-    setPhotos((current) => [
-      ...current,
-      ...files.map((file) => ({ file, preview: URL.createObjectURL(file) })),
-    ]);
+      setPhotos((current) => [
+        ...current,
+        ...optimized.map((file) => ({ file, preview: URL.createObjectURL(file) })),
+      ]);
+    } catch (err) {
+      setPhotoError(err instanceof Error ? err.message : "Could not optimize this photo.");
+    } finally {
+      setOptimizing(false);
+    }
   }
 
   function removePhoto(index: number) {
@@ -265,13 +324,13 @@ export default function BookingForm() {
         <input
           id="service-photos"
           type="file"
-          accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+          accept="image/jpeg,image/png,image/webp"
           multiple
           onChange={onPhotoChange}
-          disabled={photos.length >= MAX_PHOTOS || submitting}
+          disabled={photos.length >= MAX_PHOTOS || submitting || optimizing}
         />
         <span className="form-hint">
-          Add up to {MAX_PHOTOS} photos, 5 MB each. JPG, PNG, WEBP, or HEIC.
+          Images are resized automatically. Add up to {MAX_PHOTOS} photos, 700 KB each, with a 3 MB total limit to keep the request under Vercel's upload limit.
         </span>
         {photoError && <span className="form-error" role="alert">{photoError}</span>}
         {photos.length > 0 && (
@@ -284,7 +343,7 @@ export default function BookingForm() {
                   className="photo-remove"
                   onClick={() => removePhoto(index)}
                   aria-label={`Remove ${photo.file.name}`}
-                  disabled={submitting}
+                  disabled={submitting || optimizing}
                 >
                   Remove
                 </button>
@@ -297,8 +356,8 @@ export default function BookingForm() {
 
       {error && <p className="form-error" role="alert">{error}</p>}
 
-      <button type="submit" className="btn btn-primary" disabled={submitting}>
-        {submitting ? "Sending…" : "Submit service request"}
+      <button type="submit" className="btn btn-primary" disabled={submitting || optimizing}>
+        {optimizing ? "Optimizing photos…" : submitting ? "Sending…" : "Submit service request"}
       </button>
     </form>
   );

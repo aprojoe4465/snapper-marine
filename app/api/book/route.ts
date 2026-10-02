@@ -15,9 +15,10 @@ const PHOTO_TYPES = new Set([
   "image/heif",
 ]);
 const PHOTO_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif"]);
-const MAX_PHOTOS = 6;
-const MAX_PHOTO_SIZE = 5 * 1024 * 1024;
-const MAX_TOTAL_PHOTO_SIZE = 20 * 1024 * 1024;
+const MAX_PHOTOS = 5;
+const MAX_PHOTO_SIZE = 800 * 1024;
+// Keep multipart requests well below Vercel Hobby's approximately 4.5 MB body limit.
+const MAX_TOTAL_PHOTO_SIZE = 3 * 1024 * 1024;
 
 function required(value: unknown, label: string): string {
   if (typeof value !== "string" || !value.trim()) {
@@ -58,16 +59,16 @@ async function parsePhotos(form: FormData): Promise<BookingPhoto[]> {
 
   const totalSize = files.reduce((total, file) => total + file.size, 0);
   if (totalSize > MAX_TOTAL_PHOTO_SIZE) {
-    throw new Error("Attached photos must be 20 MB or less in total");
+    throw new Error("Attached photos must be 3 MB or less in total");
   }
 
   const photos: BookingPhoto[] = [];
   for (const file of files) {
     if (!isAllowedPhoto(file)) {
-      throw new Error("Photos must be JPG, PNG, WEBP, or HEIC files");
+      throw new Error("Photos must be JPG, PNG, or WEBP files");
     }
     if (file.size > MAX_PHOTO_SIZE) {
-      throw new Error("Each photo must be 5 MB or less");
+      throw new Error("Each photo must be 800 KB or less after compression");
     }
 
     const bytes = Buffer.from(await file.arrayBuffer());
