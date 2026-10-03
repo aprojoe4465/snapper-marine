@@ -100,6 +100,24 @@ function safeFilename(name: string, index: number): string {
   return cleaned || `service-photo-${index + 1}`;
 }
 
+function describeResendError(error: unknown): string {
+  try {
+    if (error instanceof Error) {
+      const details = error as Error & { statusCode?: unknown; body?: unknown };
+      return JSON.stringify({
+        name: details.name,
+        message: details.message,
+        statusCode: details.statusCode,
+        body: details.body,
+      });
+    }
+    const serialized = JSON.stringify(error);
+    return serialized || String(error);
+  } catch {
+    return String(error);
+  }
+}
+
 function photoAttachments(photos: BookingPhoto[]) {
   return photos.flatMap((photo, index) => {
     const match = photo.dataUrl.match(/^data:([^;]+);base64,(.+)$/);
@@ -169,12 +187,12 @@ async function notifyByEmail(entry: BookingRequest): Promise<void> {
     });
 
     if (result.error) {
-      console.error(`[booking] Resend failed for ${entry.id}:`, result.error);
+      console.error(`[booking] Resend failed for ${entry.id}: ${describeResendError(result.error)}`);
       return;
     }
     console.info(`[booking] Email sent for ${entry.id}: ${result.data?.id || "accepted"}`);
   } catch (error) {
-    console.error(`[booking] Email notification failed for ${entry.id}:`, error);
+    console.error(`[booking] Email notification failed for ${entry.id}: ${describeResendError(error)}`);
   }
 }
 

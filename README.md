@@ -57,7 +57,9 @@ RESEND_API_KEY=re_xxx
 RESEND_FROM=Snapper Marine <onboarding@resend.dev>
 ```
 
-`RESEND_FROM` is optional and defaults to the Resend onboarding sender for testing. After verifying `snappermarine.com` in Resend, set it to a sender on that domain, such as `Snapper Marine <bookings@snappermarine.com>`. If the API key is missing or Resend has an error, the booking is still saved and the customer still receives a success response; the server logs the skipped or failed notification.
+`RESEND_FROM` is optional and defaults to the Resend onboarding sender for testing. After verifying `snappermarine.com` in Resend, set it to a sender on that domain, such as `Snapper Marine <bookings@snappermarine.com>`. If the API key is missing or Resend has an error, the customer still receives a success response; local file storage is best-effort, Vercel skips the file write, and the server logs the skipped or failed notification.
+
+Common Resend failure: a `bookings@...` sender will be rejected until its domain is verified in Resend. Use `Snapper Marine <onboarding@resend.dev>` for testing, or verify `snappermarine.com` and then set `RESEND_FROM` to a sender on that verified domain.
 
 ### Alternative: Formspree
 
