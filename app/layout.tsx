@@ -12,12 +12,20 @@ export const metadata: Metadata = {
   description:
     `${site.name} — mobile marine service at your dock, marina, or home throughout ${site.serviceAreaSummary}. Book on-site service online.`,
   metadataBase: new URL(`https://${site.domain}`),
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
   openGraph: {
     title: site.name,
     description: site.tagline,
     url: `https://${site.domain}`,
     siteName: site.name,
     type: "website",
+    images: [{ url: "/icon-512.png", width: 512, height: 512, alt: site.name }],
   },
 };
 
