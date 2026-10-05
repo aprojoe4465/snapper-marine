@@ -63,9 +63,6 @@ export default function ServicesPage() {
               height={boatServices.height}
               className="services-photo-img"
             />
-            <figcaption className="photo-credit">
-              {boatServices.caption} {boatServices.credit}
-            </figcaption>
           </figure>
           <div>
             <div className="section-head">

@@ -40,9 +40,6 @@ export default function HomePage() {
                 priority
                 className="hero-photo-img"
               />
-              <figcaption className="photo-credit">
-                {boatHero.caption} {boatHero.credit}
-              </figcaption>
             </figure>
           </div>
         </div>
@@ -71,10 +68,6 @@ export default function HomePage() {
                     className="boat-card-img"
                   />
                 </div>
-                <figcaption>
-                  <span className="boat-card-caption">{img.caption}</span>
-                  <span className="photo-credit">{img.credit}</span>
-                </figcaption>
               </figure>
             ))}
           </div>

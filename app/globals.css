@@ -675,15 +675,6 @@ textarea {
   aspect-ratio: 4 / 3;
 }
 
-.photo-credit {
-  display: block;
-  padding: 0.55rem 0.85rem;
-  font-size: 0.7rem;
-  line-height: 1.4;
-  color: var(--chrome-dim);
-  background: #08080c;
-  border-top: 1px solid var(--border);
-}
 
 .boat-gallery {
   display: grid;
@@ -717,24 +708,8 @@ textarea {
   object-fit: cover;
 }
 
-.boat-card figcaption {
-  padding: 0.85rem 1rem 1rem;
-  display: grid;
-  gap: 0.35rem;
-}
 
-.boat-card-caption {
-  color: var(--chrome);
-  font-size: 0.88rem;
-  font-weight: 500;
-}
 
-.boat-card .photo-credit {
-  padding: 0;
-  background: transparent;
-  border: 0;
-  color: var(--chrome-dim);
-}
 
 .services-spotlight {
   display: grid;
