@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { appendBooking, type BookingPhoto, type BookingRequest } from "@/lib/bookings";
 import { site } from "@/lib/site";
+import { clientIp, contentSpamReason, rateLimited, timingProblem } from "@/lib/spam";
 
 export const runtime = "nodejs";
 
@@ -196,9 +197,29 @@ async function notifyByEmail(entry: BookingRequest): Promise<void> {
   }
 }
 
+function fakeOk() {
+  return NextResponse.json({ ok: true, id: `bk_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}` });
+}
+
 export async function POST(req: Request) {
   try {
+    const ip = clientIp(req);
+    if (rateLimited(ip)) {
+      console.warn(`[booking] rate limited ${ip}`);
+      return NextResponse.json({ error: "Too many requests. Please wait a few minutes or call us." }, { status: 429 });
+    }
+
     const form = await req.formData();
+
+    if ((formValue(form, "company_website") || "").trim()) {
+      console.warn(`[booking] honeypot tripped (${ip})`);
+      return fakeOk();
+    }
+    const timing = timingProblem(formValue(form, "formStartedAt"));
+    if (timing) {
+      console.warn(`[booking] spam rejected (${ip}): ${timing}`);
+      return fakeOk();
+    }
 
     const name = required(formValue(form, "name"), "Name");
     const phone = required(formValue(form, "phone"), "Phone");
@@ -220,6 +241,15 @@ export async function POST(req: Request) {
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: "Invalid email" }, { status: 400 });
+    }
+
+    const spamReason = contentSpamReason({
+      name, phone, email, boatType, locationDetail, problem,
+      preferredDate: (formValue(form, "preferredDate") || "").trim(),
+    });
+    if (spamReason) {
+      console.warn(`[booking] spam rejected (${ip}): ${spamReason}`);
+      return fakeOk();
     }
 
     // Temporary MVP storage: data URLs keep photos associated with local bookings.json.

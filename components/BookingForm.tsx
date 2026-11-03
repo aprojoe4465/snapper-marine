@@ -108,6 +108,12 @@ export default function BookingForm() {
   const [submitting, setSubmitting] = useState(false);
   const [optimizing, setOptimizing] = useState(false);
   const photosRef = useRef<SelectedPhoto[]>([]);
+  const startedAtRef = useRef<number>(0);
+  const honeypotRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    startedAtRef.current = Date.now();
+  }, []);
 
   useEffect(() => {
     photosRef.current = photos;
@@ -176,6 +182,8 @@ export default function BookingForm() {
     try {
       const payload = new FormData();
       Object.entries(form).forEach(([key, value]) => payload.append(key, value));
+      payload.append("company_website", honeypotRef.current?.value || "");
+      payload.append("formStartedAt", String(startedAtRef.current || ""));
       photos.forEach(({ file }) => payload.append("photos", file, file.name));
 
       const res = await fetch("/api/book", {
@@ -195,6 +203,12 @@ export default function BookingForm() {
 
   return (
     <form className="form" onSubmit={onSubmit} noValidate>
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: 1, height: 1, overflow: "hidden" }}>
+        <label>
+          Company website
+          <input ref={honeypotRef} type="text" name="company_website" tabIndex={-1} autoComplete="off" defaultValue="" />
+        </label>
+      </div>
       <div className="form-row two">
         <label>
           Full name *
