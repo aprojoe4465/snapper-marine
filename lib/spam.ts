@@ -16,9 +16,9 @@ export function rateLimited(ip: string, now = Date.now()): boolean {
   recent.push(now);
   hits.set(ip, recent);
   if (hits.size > 5000) {
-    for (const [key, times] of hits) {
+    hits.forEach((times, key) => {
       if (!times.some((t) => now - t < RATE_WINDOW_MS)) hits.delete(key);
-    }
+    });
   }
   return recent.length > RATE_MAX;
 }
